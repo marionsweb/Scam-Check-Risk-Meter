@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Scam Check"
+description = "A local-first scam message checker that helps people spot common red flags in job and money-making offers before they share money or personal details."
+version = "1.0.0"
+id = "artifacts/scam-check"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23179
+
+[services.development]
+run = "pnpm --filter @workspace/scam-check run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/scam-check", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/scam-check/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23179"
+BASE_PATH = "/"
